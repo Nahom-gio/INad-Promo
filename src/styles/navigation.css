@@ -50,7 +50,7 @@
 .nav-pill::after{display:none !important;}
 .hamburger{
   display:none;flex-direction:column;
-  gap:6px;cursor:none;
+  gap:6px;
   background:none;border:none;padding:4px;
 }
 .hamburger span{
@@ -79,6 +79,7 @@
   transition:color .3s;
 }
 #mob-menu a:hover{color:var(--pink);}
+#mob-menu a:focus-visible{color:var(--pink);}
 #mob-menu .mob-sub{
   font-family:var(--font-b);font-size:.72rem;
   letter-spacing:.3em;text-transform:uppercase;

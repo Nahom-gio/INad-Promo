@@ -31,9 +31,11 @@ body{
   background:var(--ink);
   color:var(--parch);
   overflow-x:hidden;
-  cursor:none;
+  cursor:default;
   -webkit-font-smoothing:antialiased;
 }
+a,button,[role="button"],select,.wf{cursor:pointer;}
+input,textarea{cursor:text;}
 ::selection{background:var(--pink);color:#fff;}
 
 /* GRAIN */
@@ -58,7 +60,17 @@ body::before{
   pointer-events:none;z-index:9998;
   border-radius:50%;
   transform:translate(-50%,-50%);
+  opacity:0;
 }
+body.has-custom-cursor,
+body.has-custom-cursor a,
+body.has-custom-cursor button,
+body.has-custom-cursor [role="button"],
+body.has-custom-cursor input,
+body.has-custom-cursor textarea,
+body.has-custom-cursor select{cursor:none;}
+body.has-custom-cursor #cur-dot,
+body.has-custom-cursor #cur-ring{opacity:1;}
 #cur-dot{
   width:5px;height:5px;
   background:var(--parch);
@@ -75,5 +87,25 @@ body.hovering #cur-ring{
   width:52px;height:52px;
   border-color:rgba(236,56,146,.5);
   opacity:.7;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible{
+  outline:2px solid var(--cyan);
+  outline-offset:3px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
 }
 
