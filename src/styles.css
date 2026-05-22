@@ -1,0 +1,14 @@
+@import './styles/base.css';
+@import './styles/navigation.css';
+@import './styles/hero.css';
+@import './styles/shared.css';
+@import './styles/services.css';
+@import './styles/about.css';
+@import './styles/process.css';
+@import './styles/work.css';
+@import './styles/why.css';
+@import './styles/testimonials.css';
+@import './styles/industries.css';
+@import './styles/contact.css';
+@import './styles/footer.css';
+@import './styles/responsive.css';

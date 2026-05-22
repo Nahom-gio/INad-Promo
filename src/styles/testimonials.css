@@ -1,0 +1,137 @@
+/* ═══════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════ */
+#testimonials{background:var(--ink-2);}
+.test-head{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:5rem;
+  flex-wrap:wrap;gap:2rem;
+}
+.test-badge{
+  display:flex;flex-direction:column;align-items:flex-end;gap:.4rem;
+}
+.test-stars{
+  font-size:1.05rem;
+  background:var(--grad);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.test-sublabel{
+  font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--parch-2);
+}
+/* Featured quote */
+.test-featured{
+  display:grid;grid-template-columns:2fr 1fr;
+  gap:1.5px;
+  margin-bottom:1.5px;
+}
+.test-feat-main{
+  background:var(--ink-3);
+  padding:4rem;
+  position:relative;
+}
+.test-feat-qmark{
+  font-family:var(--font-d);
+  font-size:8rem;font-weight:300;
+  background:var(--grad);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  opacity:.15;
+  line-height:.6;
+  margin-bottom:2rem;
+}
+.test-feat-text{
+  font-family:var(--font-d);
+  font-size:clamp(1.3rem,2.2vw,1.8rem);
+  font-weight:300;font-style:italic;
+  line-height:1.5;
+  color:var(--parch);
+  margin-bottom:2rem;
+}
+.test-feat-text em{
+  -webkit-text-fill-color:transparent;
+  background:var(--grad);
+  -webkit-background-clip:text;
+  background-clip:text;
+  font-style:normal;
+}
+.test-feat-author{
+  font-size:.65rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--cyan);
+}
+.test-feat-side{
+  background:var(--grad);
+  padding:4rem 3rem;
+  display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;
+}
+.test-feat-score{
+  font-family:var(--font-d);
+  font-size:6rem;font-weight:300;color:#fff;
+  line-height:1;
+}
+.test-feat-score-label{
+  font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(255,255,255,.7);margin-top:.4rem;
+}
+.test-feat-stars{font-size:1.4rem;color:#fff;letter-spacing:.1em;margin-top:.8rem;}
+/* Cards */
+.test-cards{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.5px;
+}
+.tcard{
+  background:var(--ink-3);
+  padding:2.8rem;
+  transition:background .4s;
+}
+.tcard:hover{background:var(--ink-4);}
+.tcard-top{
+  display:flex;justify-content:space-between;
+  margin-bottom:1.8rem;
+}
+.tcard-qmark{
+  font-family:var(--font-d);
+  font-size:3.5rem;font-weight:300;
+  background:var(--grad);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  opacity:.25;line-height:.7;
+}
+.tcard-stars{
+  font-size:.82rem;
+  background:var(--grad);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.tcard-text{
+  font-size:.83rem;font-weight:300;
+  font-style:italic;
+  color:var(--parch-2);line-height:1.85;
+  margin-bottom:2rem;
+}
+.tcard-rule{height:1px;background:var(--rule-2);margin-bottom:1.4rem;}
+.tcard-author{
+  display:flex;justify-content:space-between;align-items:center;
+}
+.tcard-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--grad);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-size:.9rem;color:#fff;
+  flex-shrink:0;
+}
+.tcard-name{
+  font-size:.72rem;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+}
+.tcard-role{
+  font-size:.65rem;color:var(--parch-2);margin-top:.15rem;
+  font-weight:300;
+}
+.tcard-platform{
+  font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--pink);opacity:.8;
+}
+

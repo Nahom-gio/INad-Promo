@@ -1,0 +1,54 @@
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:1200px){
+  .svc-item{grid-template-columns:4rem 1fr auto;gap:0 2rem;}
+}
+@media(max-width:1024px){
+  #nav{padding:1.4rem 4vw;}
+  #nav.scrolled{padding:1rem 4vw;}
+  .section{padding:7rem 4vw;}
+  .section-sm{padding:5rem 4vw;}
+  #hero{padding:0 4vw;}
+  .about-grid{grid-template-columns:1fr;gap:5rem;}
+  .process-steps{grid-template-columns:1fr 1fr;gap:1.5px;}
+  .work-grid{grid-template-columns:1fr 1fr;}
+  .wcard:nth-child(n){grid-column:span 1;aspect-ratio:4/3;}
+  .why-grid{grid-template-columns:1fr 1fr;}
+  .test-featured{grid-template-columns:1fr;}
+  .test-feat-side{display:none;}
+  .contact-layout{grid-template-columns:1fr;gap:5rem;}
+  .footer-main{grid-template-columns:1fr 1fr;gap:3rem;}
+  .footer-brand{grid-column:span 2;}
+  #industries{padding:5rem 4vw;}
+  .ind-grid{grid-template-columns:repeat(3,1fr);}
+  .svc-intro{grid-template-columns:1fr;gap:1.5rem;}
+  .svc-list{grid-template-columns:1fr;}
+  .svc-intro-right{justify-self:start;}
+  .process-head{grid-template-columns:1fr;}
+  .process-head-right{justify-self:start;max-width:100%;}
+}
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  h1.hero-title{font-size:3.2rem;}
+  .svc-item{grid-template-columns:3.5rem 1fr auto;gap:0 1.2rem;padding:2rem 0;}
+  .svc-name{font-size:1.2rem;}
+  .why-grid{grid-template-columns:1fr;}
+  .test-cards{grid-template-columns:1fr;}
+  .test-featured{display:none;}
+  .footer-main{grid-template-columns:1fr;}
+  .footer-brand{grid-column:span 1;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;}
+  .cform-row{grid-template-columns:1fr;}
+  .cf-full{grid-column:span 1;}
+  .about-stats{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .section{padding:5rem 4vw;}
+  h1.hero-title{font-size:2.6rem;letter-spacing:-.01em;}
+  .work-grid{grid-template-columns:1fr;}
+  .ind-item{width:220px;}
+  .process-steps{grid-template-columns:1fr;}
+  .about-stats{grid-template-columns:1fr;}
+}

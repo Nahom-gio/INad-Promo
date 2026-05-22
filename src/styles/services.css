@@ -1,0 +1,85 @@
+/* ═══════════════════════════════════════════
+   SERVICES  – editorial list
+═══════════════════════════════════════════ */
+#services{
+  background:var(--ink);
+  padding-bottom:4.5rem;
+}
+.svc-intro{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:4rem;align-items:end;
+  margin-bottom:3.5rem;
+}
+.svc-intro-right{
+  font-size:.88rem;font-weight:300;
+  color:var(--parch-2);line-height:1.85;
+  max-width:380px;justify-self:end;
+  align-self:end;
+}
+.svc-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:3rem;
+}
+.svc-item{
+  display:grid;
+  grid-template-columns:5rem 1fr auto;
+  gap:0 3rem;
+  align-items:center;
+  padding:2.6rem 0;
+  border-top:1px solid var(--rule);
+  cursor:none;
+  transition:background .4s;
+  position:relative;
+  color:inherit;
+  text-decoration:none;
+}
+.svc-item:last-child{border-bottom:1px solid var(--rule);}
+.svc-item::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;width:0;
+  background:var(--grad-h);
+  opacity:.06;
+  transition:width .5s var(--ease);
+}
+.svc-item:hover::before{width:100%;}
+.svc-num{
+  font-family:var(--font-d);
+  font-size:1rem;font-weight:300;
+  color:var(--parch-2);
+  letter-spacing:.1em;
+  transition:color .3s;
+}
+.svc-item:hover .svc-num{color:var(--cyan);}
+.svc-body{}
+.svc-name{
+  font-family:var(--font-d);
+  font-size:clamp(1.4rem,2.5vw,2.1rem);
+  font-weight:300;
+  letter-spacing:-.01em;
+  margin-bottom:.5rem;
+  transition:color .3s;
+}
+.svc-item:hover .svc-name{color:var(--pink);}
+.svc-tags{
+  display:flex;flex-wrap:wrap;gap:.4rem;
+}
+.svc-tag{
+  font-family:var(--font-b);
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--parch-2);
+  border:1px solid var(--rule-2);
+  padding:.2rem .6rem;
+  transition:border-color .3s,color .3s;
+}
+.svc-item:hover .svc-tag{border-color:rgba(66,177,219,.25);color:var(--cyan);}
+.svc-arrow{
+  font-size:1.4rem;color:var(--parch-2);
+  transition:transform .4s var(--ease),color .3s;
+  line-height:1;
+}
+.svc-item:hover .svc-arrow{
+  transform:translate(4px,-4px);
+  color:var(--pink);
+}
+

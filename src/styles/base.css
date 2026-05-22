@@ -1,0 +1,79 @@
+/* ═══════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════ */
+:root{
+  --ink:    #09080B;
+  --ink-2:  #100F16;
+  --ink-3:  #17161F;
+  --ink-4:  #1E1D28;
+  --parch:  #F0E9DC;
+  --parch-2:#C4BDB6;
+  --parch-3:#8A8492;
+  --rule:   rgba(240,233,220,.08);
+  --rule-2: rgba(240,233,220,.16);
+  --pink:   #EC3892;
+  --cyan:   #42B1DB;
+  --purp:   #413E75;
+  --grad:   linear-gradient(135deg,#42B1DB 0%,#413E75 45%,#EC3892 100%);
+  --grad-h: linear-gradient(90deg,#42B1DB 0%,#413E75 50%,#EC3892 100%);
+  --font-d: 'Bodoni Moda','Georgia',serif;
+  --font-b: 'DM Sans',sans-serif;
+  --ease:   cubic-bezier(.22,1,.36,1);
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{
+  font-family:var(--font-b);
+  background:var(--ink);
+  color:var(--parch);
+  overflow-x:hidden;
+  cursor:none;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--pink);color:#fff;}
+
+/* GRAIN */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity:.028;
+  pointer-events:none;
+  z-index:9000;
+}
+
+::-webkit-scrollbar{width:2px;}
+::-webkit-scrollbar-track{background:var(--ink);}
+::-webkit-scrollbar-thumb{background:var(--pink);}
+
+/* ═══════════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════════ */
+#cur-dot,#cur-ring{
+  position:fixed;top:0;left:0;
+  pointer-events:none;z-index:9998;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+}
+#cur-dot{
+  width:5px;height:5px;
+  background:var(--parch);
+  transition:transform .1s var(--ease);
+}
+#cur-ring{
+  width:32px;height:32px;
+  border:1px solid rgba(240,233,220,.35);
+  transition:width .25s var(--ease),height .25s var(--ease),
+             border-color .25s,opacity .25s;
+}
+body.hovering #cur-dot{transform:translate(-50%,-50%) scale(0);}
+body.hovering #cur-ring{
+  width:52px;height:52px;
+  border-color:rgba(236,56,146,.5);
+  opacity:.7;
+}
+
