@@ -10,6 +10,15 @@
   overflow:hidden;
 }
 
+.hero-bg{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(rgba(9,8,11,.38),rgba(9,8,11,.68)),
+    url('/background/magnific_ultrarealistic-cinematic-_74ay5i1JAL.png') center/cover no-repeat;
+  transform:scale(1.02);
+}
+
 /* Ambient glow */
 .hero-glow{
   position:absolute;
@@ -32,6 +41,7 @@
 /* Fine grid bg */
 .hero-grid-bg{
   position:absolute;inset:0;
+  opacity:.45;
   background-image:
     linear-gradient(var(--rule) 1px,transparent 1px),
     linear-gradient(90deg,var(--rule) 1px,transparent 1px);
@@ -61,19 +71,31 @@
 
 h1.hero-title{
   font-family:var(--font-d);
-  font-size:clamp(3.8rem,8.5vw,9rem);
+  font-size:clamp(3.1rem,6.6vw,7rem);
   font-weight:300;
-  line-height:.96;
+  line-height:1.08;
   letter-spacing:-.02em;
   margin-bottom:2rem;
   animation:riseIn 1s var(--ease) .7s both;
+  overflow:visible;
+  padding-bottom:.12em;
+  padding-inline:.08em;
 }
 h1.hero-title em{
-  font-style:italic;
+  display:inline-block;
+  padding:.02em .16em .08em .02em;
+  margin-right:-.12em;
+  font-style:normal;
+  font-weight:400;
   background:var(--grad);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
+}
+.hero-word{
+  font-family:var(--font-d);
+  font-style:normal;
+  font-weight:300;
 }
 
 .hero-sub{

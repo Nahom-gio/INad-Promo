@@ -41,9 +41,11 @@
    TICKER
 ═══════════════════════════════════════════ */
 .ticker{
-  border-top:1px solid var(--rule);
-  border-bottom:1px solid var(--rule);
-  padding:.6rem 0;
+  border-top:0;
+  border-bottom:0;
+  padding:.8rem 0;
+  background:var(--grad-h);
+  box-shadow:0 18px 60px rgba(236,56,146,.16);
   overflow:hidden;white-space:nowrap;
 }
 .ticker-inner{
@@ -54,10 +56,10 @@
   font-family:var(--font-b);
   font-size:.6rem;font-weight:400;
   letter-spacing:.3em;text-transform:uppercase;
-  color:var(--parch-2);
+  color:#fff;
   padding:0 2.2rem;
 }
-.ticker-dot{color:var(--pink);opacity:.7;}
+.ticker-dot{color:#fff;opacity:.85;}
 @keyframes ticker{
   from{transform:translateX(0);}
   to{transform:translateX(-50%);}
@@ -89,8 +91,12 @@
   font-weight:300;
   line-height:1.08;
   letter-spacing:-.01em;
+  overflow:visible;
 }
 .display em{
+  display:inline-block;
+  padding:.02em .16em .08em .02em;
+  margin-right:-.12em;
   font-style:italic;
   background:var(--grad);
   -webkit-background-clip:text;
