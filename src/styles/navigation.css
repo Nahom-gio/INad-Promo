@@ -14,6 +14,10 @@
   border-bottom:1px solid var(--rule);
 }
 .nav-logo-link{text-decoration:none;display:block;line-height:0;}
+.nav-logo-link img{
+  height:52px;
+  width:auto;
+}
 .nav-links{
   display:flex;list-style:none;
   align-items:center;gap:2.8rem;
@@ -37,15 +41,16 @@
 .nav-links a:hover::after{width:100%;}
 .nav-pill{
   display:inline-flex;
-  border:1px solid var(--rule-2) !important;
+  border:1px solid rgba(240,233,220,.32) !important;
   padding:.42rem 1.3rem;
   color:var(--parch) !important;
-  transition:background .3s, border-color .3s !important;
+  background:rgba(9,8,11,.18);
+  transition:background .3s, border-color .3s, color .3s !important;
 }
 .nav-pill:hover{
-  background:var(--parch) !important;
-  color:var(--ink) !important;
-  border-color:var(--parch) !important;
+  background:var(--grad-h) !important;
+  color:#fff !important;
+  border-color:transparent !important;
 }
 .nav-pill::after{display:none !important;}
 .hamburger{

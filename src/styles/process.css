@@ -1,66 +1,128 @@
-/* ═══════════════════════════════════════════
-   PROCESS
-═══════════════════════════════════════════ */
+/* PROCESS */
 #process{
-  background:var(--ink);
-  padding-top:4.5rem;
-}
-.process-head{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:4rem;align-items:end;
-  margin-bottom:5rem;
-}
-.process-head-right{
-  font-size:.88rem;font-weight:300;
-  color:var(--parch-2);line-height:1.85;
-  max-width:380px;justify-self:end;
-}
-.process-steps{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:1.5px;
-}
-.pstep{
-  background:
-    linear-gradient(145deg,rgba(9,8,11,.62),rgba(9,8,11,.86)),
-    var(--step-color,var(--ink-2));
-  padding:3rem 2.5rem;
+  background:#131318;
+  padding-block:6.5rem 6.8rem;
   position:relative;
   overflow:hidden;
-  transition:filter .4s,transform .4s;
 }
-.pstep:nth-child(1){--step-color:#42B1DB;}
-.pstep:nth-child(2){--step-color:#413E75;}
-.pstep:nth-child(3){--step-color:#E1A743;}
-.pstep:nth-child(4){--step-color:#F38B59;}
-.pstep:hover{
-  filter:saturate(1.05) brightness(1.04);
-  transform:translateY(-4px);
-}
-.pstep::before{
+#process::before{
   content:'';
-  position:absolute;top:0;left:0;right:0;
-  height:2px;background:var(--grad-h);
-  transform:scaleX(0);transform-origin:left;
-  transition:transform .5s var(--ease);
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(66,177,219,.32),rgba(209,188,255,.22),transparent);
+  pointer-events:none;
 }
-.pstep:hover::before{transform:scaleX(1);}
+.process-inner{
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:1680px;
+  margin-inline:auto;
+}
+.process-head{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  margin-bottom:3.4rem;
+}
+.process-head .label{
+  justify-content:center;
+  color:#00eefc;
+  font-family:var(--font-b);
+  font-weight:500;
+  font-size:.58rem;
+  letter-spacing:.36em;
+  margin-bottom:1rem;
+}
+.process-head .label::before{
+  display:none;
+}
+.process-head .display em{
+  background:none;
+  color:#d1bcff;
+  -webkit-text-fill-color:currentColor;
+}
+.process-steps{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  column-gap:clamp(1.6rem,3.2vw,4rem);
+  align-items:stretch;
+}
+.pstep{
+  --step-ghost:#e4e1e9;
+  --step-border:rgba(255,255,255,.1);
+  position:relative;
+  padding:2.7rem 0 .3rem 0;
+  min-height:285px;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+}
+.pstep:nth-child(1){
+  --step-ghost:#ffabf3;
+  --step-border:rgba(255,171,243,.3);
+}
+.pstep:nth-child(2){
+  --step-ghost:#00eefc;
+  --step-border:rgba(0,238,252,.3);
+}
+.pstep:nth-child(3){
+  --step-ghost:#d1bcff;
+  --step-border:rgba(209,188,255,.3);
+}
+.pstep:nth-child(4){
+  --step-ghost:#e4e1e9;
+  --step-border:rgba(255,255,255,.1);
+}
 .pstep-num{
+  position:absolute;
+  top:.2rem;
+  left:0;
   font-family:var(--font-d);
-  font-size:4rem;font-weight:300;
-  color:rgba(255,255,255,.18);
-  line-height:1;
-  margin-bottom:2.5rem;
-  transition:opacity .4s;
+  font-size:118px;
+  font-weight:300;
+  line-height:.76;
+  color:var(--step-ghost);
+  opacity:.1;
+  pointer-events:none;
 }
-.pstep:hover .pstep-num{opacity:.7;}
+.pstep-content{
+  position:relative;
+  z-index:1;
+  border-left:1px solid var(--step-border);
+  padding-left:2rem;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  transition:border-color .35s,transform .35s;
+}
+.pstep:hover .pstep-content{
+  border-color:color-mix(in srgb,var(--step-ghost) 50%,transparent);
+  transform:translateY(-2px);
+}
 .pstep-title{
   font-family:var(--font-d);
-  font-size:1.25rem;font-weight:300;
-  margin-bottom:.8rem;
-  color:#fff;
+  font-size:clamp(1.9rem,2.55vw,2.9rem);
+  font-weight:300;
+  line-height:1;
+  margin:1.35rem 0 2.35rem;
+  min-height:1.05em;
+  color:rgba(255,255,255,.9);
+  transition:color .35s;
+}
+.pstep:hover .pstep-title{
+  color:var(--step-ghost);
 }
 .pstep-text{
-  font-size:.8rem;font-weight:300;
-  color:rgba(255,255,255,.76);line-height:1.8;
+  font-family:var(--font-b);
+  margin-top:0;
+  font-size:clamp(.98rem,1.08vw,1.2rem);
+  font-weight:400;
+  line-height:1.65;
+  color:#f4c9df;
+  max-width:100%;
 }
-

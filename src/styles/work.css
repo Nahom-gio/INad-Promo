@@ -27,7 +27,39 @@
 .wcard{
   position:relative;overflow:hidden;
   cursor:none;
+  background:var(--ink);
+  border:1px solid rgba(240,233,220,.055);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
 }
+.wcard::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px),
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:56px 56px;
+  opacity:.12;
+  mask-image:radial-gradient(circle at 70% 28%,black,transparent 72%);
+  -webkit-mask-image:radial-gradient(circle at 70% 28%,black,transparent 72%);
+  pointer-events:none;
+}
+.wcard::after{
+  content:'';
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:3;
+  height:2px;
+  background:var(--grad-h);
+  opacity:.28;
+  transform:scaleX(.22);
+  transform-origin:left;
+  transition:transform .55s var(--ease),opacity .3s;
+}
+.wcard:hover::after{transform:scaleX(1);opacity:.75;}
 .wcard:nth-child(1){grid-column:span 7;aspect-ratio:16/9;}
 .wcard:nth-child(2){grid-column:span 5;aspect-ratio:4/3;}
 .wcard:nth-child(3){grid-column:span 4;aspect-ratio:4/3;}
@@ -42,11 +74,13 @@
 .wcard:hover .wbg{transform:scale(1.06);}
 .woverlay{
   position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(9,8,11,.95) 0%,rgba(9,8,11,.2) 60%,transparent 100%);
-  opacity:0;transition:opacity .45s;
+  z-index:2;
+  background:linear-gradient(to top,rgba(9,8,11,.96) 0%,rgba(9,8,11,.38) 58%,rgba(9,8,11,.1) 100%);
+  opacity:.24;transition:opacity .45s;
 }
-.wcard:hover .woverlay{opacity:1;}
+.wcard:hover .woverlay{opacity:.92;}
 .winfo{
+  z-index:4;
   position:absolute;bottom:2rem;left:2rem;right:2rem;
   transform:translateY(10px);opacity:0;
   transition:all .45s var(--ease);

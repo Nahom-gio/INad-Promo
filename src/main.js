@@ -5,6 +5,7 @@ import { initHeroWord } from './js/heroWord.js';
 import { initMobileMenu } from './js/mobileMenu.js';
 import { initNavigation } from './js/navigation.js';
 import { initReveal } from './js/reveal.js';
+import { initTiltCards } from './js/tiltCards.js';
 import { initWorkFilter } from './js/workFilter.js';
 import { renderPage } from './renderPage.js';
 
@@ -13,6 +14,7 @@ initCursor();
 initNavigation();
 initMobileMenu();
 initReveal();
+initTiltCards();
 initWorkFilter();
 initContactForm();
 initHeroWord();
