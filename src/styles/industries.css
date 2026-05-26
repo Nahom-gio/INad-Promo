@@ -109,16 +109,16 @@
   top:0;
   bottom:0;
   z-index:10;
-  width:8rem;
+  width:3rem;
   pointer-events:none;
 }
 .client-edge-left{
   left:0;
-  background:linear-gradient(90deg,var(--clients-dark),transparent);
+  background:linear-gradient(90deg,rgba(255,255,255,.045),rgba(255,255,255,.015) 55%,transparent);
 }
 .client-edge-right{
   right:0;
-  background:linear-gradient(270deg,var(--clients-dark),transparent);
+  background:linear-gradient(270deg,rgba(255,255,255,.045),rgba(255,255,255,.015) 55%,transparent);
 }
 .client-track{
   display:flex;

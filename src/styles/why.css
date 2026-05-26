@@ -3,7 +3,7 @@
   background:#131318;
 }
 .why-inner{
-  width:min(100%,1440px);
+  width:min(100%,1180px);
   margin-inline:auto;
 }
 .why-head{
@@ -22,14 +22,17 @@
 .why-grid{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  column-gap:clamp(2rem,3vw,3.5rem);
-  row-gap:5rem;
+  column-gap:clamp(2rem,3vw,3rem);
+  row-gap:4rem;
+  justify-items:center;
 }
 .why-card{
   display:flex;
   flex-direction:column;
   gap:1.5rem;
   min-height:0;
+  width:100%;
+  max-width:20rem;
 }
 .why-icon{
   font-size:2rem;
@@ -46,7 +49,7 @@
   font-family:var(--font-d);
   font-size:clamp(1.35rem,1.7vw,1.65rem);
   font-weight:300;
-  line-height:1.25;
+  line-height:1.18;
   color:#e4e1e9;
 }
 .why-card-text{

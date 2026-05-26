@@ -1,5 +1,7 @@
 const STRAPI_URL=(import.meta.env.VITE_STRAPI_URL||'').replace(/\/$/,'');
 const STRAPI_TOKEN=import.meta.env.VITE_STRAPI_TOKEN||'';
+const CACHE_TTL=10*60*1000;
+const CACHE_PREFIX='inad:strapi:';
 
 function headers(){
   return STRAPI_TOKEN ? {Authorization:`Bearer ${STRAPI_TOKEN}`} : {};
@@ -40,9 +42,50 @@ function escapeHtml(value){
 }
 
 async function get(path){
-  const response=await fetch(`${STRAPI_URL}/api/${path}`,{headers:headers()});
-  if(!response.ok) throw new Error(`Strapi request failed: ${path}`);
-  return response.json();
+  const cacheKey=`${CACHE_PREFIX}${STRAPI_URL}:${path}`;
+  const cached=readCache(cacheKey);
+  if(cached) return cached;
+
+  try{
+    const response=await fetch(`${STRAPI_URL}/api/${path}`,{headers:headers()});
+    if(!response.ok) throw new Error(`Strapi request failed: ${path}`);
+    const data=await response.json();
+    writeCache(cacheKey,data);
+    return data;
+  }catch(error){
+    const stale=readCache(cacheKey,{allowExpired:true});
+    if(stale){
+      console.warn(`[Strapi] Using cached ${path} after request failure.`,error);
+      return stale;
+    }
+    throw error;
+  }
+}
+
+function readCache(key,{allowExpired=false}={}){
+  try{
+    const raw=sessionStorage.getItem(key);
+    if(!raw) return null;
+
+    const cached=JSON.parse(raw);
+    const expired=Date.now()-cached.savedAt>CACHE_TTL;
+    if(expired&&!allowExpired) return null;
+
+    return cached.data;
+  }catch{
+    return null;
+  }
+}
+
+function writeCache(key,data){
+  try{
+    sessionStorage.setItem(key,JSON.stringify({
+      savedAt:Date.now(),
+      data,
+    }));
+  }catch{
+    // Storage may be disabled or full. The live request already succeeded.
+  }
 }
 
 function setText(selector,value){
@@ -52,16 +95,27 @@ function setText(selector,value){
 }
 
 function hydrateAbout(about){
+  const source=document.querySelector('.about-logo-frame video source');
+  const videoEl=document.querySelector('.about-logo-frame video');
+  if(!source||!videoEl) return;
+
+  const fallback=videoEl.dataset.fallbackSrc||source.src;
+  let usingFallback=source.getAttribute('src')===fallback;
+
+  videoEl.addEventListener('error',()=>{
+    if(usingFallback) return;
+    usingFallback=true;
+    source.src=fallback;
+    videoEl.load();
+  },{once:false});
+
   if(!about) return;
 
   const video=mediaUrl(about.video);
   if(video){
-    const source=document.querySelector('.about-logo-frame video source');
-    const videoEl=document.querySelector('.about-logo-frame video');
-    if(source&&videoEl){
-      source.src=video;
-      videoEl.load();
-    }
+    usingFallback=false;
+    source.src=video;
+    videoEl.load();
   }
 }
 
