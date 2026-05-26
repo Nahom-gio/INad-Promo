@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "client_logos",
+  "info": {
+    "singularName": "client-logo",
+    "pluralName": "client-logos",
+    "displayName": "Client Logo",
+    "description": "Logo item for the Our Clients marquee"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "alt": {
+      "type": "string"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

@@ -1,63 +1,111 @@
-let sliderTimer;
+let activeCategory='all';
+let activeBrand=null;
 
-function updateSlider(slider,index){
-  const slides=[...slider.querySelectorAll('.project-slide')];
-  const current=slider.querySelector('[data-slider-current]');
-  slides.forEach(slide=>slide.classList.remove('is-active'));
-  slides[index].classList.add('is-active');
-  slider.dataset.activeIndex=String(index);
-  if(current)current.textContent=String(index+1).padStart(2,'0');
+const layoutClasses=['wlayout-1','wlayout-2','wlayout-3','wlayout-4','wlayout-5','wlayout-6','wlayout-7'];
+
+function clearCardState(card){
+  card.classList.remove(...layoutClasses,'is-folder','is-open-project');
+  card.removeAttribute('aria-label');
+  card.removeAttribute('role');
+  card.tabIndex=-1;
+  card.onclick=null;
+  card.onkeydown=null;
 }
 
-function advanceSlider(slider,step=1){
-  const slides=[...slider.querySelectorAll('.project-slide')];
-  const active=Number(slider.dataset.activeIndex || 0);
-  updateSlider(slider,(active+step+slides.length)%slides.length);
+function applyLayout(cards){
+  cards.forEach((card,index)=>{
+    card.classList.add(`wlayout-${(index%7)+1}`);
+  });
 }
 
-function startSlider(slider){
-  stopSlider();
-  sliderTimer=setInterval(()=>advanceSlider(slider,1),4200);
+function setGridMode(mode){
+  const grid=document.getElementById('wGrid');
+  if(!grid) return;
+  grid.classList.remove('is-folder-view','is-project-view');
+  grid.classList.add(mode==='folder' ? 'is-folder-view' : 'is-project-view');
 }
 
-function stopSlider(){
-  if(sliderTimer)clearInterval(sliderTimer);
-}
+function showCards(cards,{mode='project'}={}){
+  const allCards=[...document.querySelectorAll('.wcard')];
+  setGridMode(mode);
 
-function showSlider(cat){
-  const sliders=document.querySelectorAll('[data-project-slider]');
-  let activeSlider=null;
-
-  sliders.forEach(slider=>{
-    const active=slider.dataset.projectSlider===cat;
-    slider.hidden=!active;
-    if(active)activeSlider=slider;
+  allCards.forEach(card=>{
+    clearCardState(card);
+    card.style.display='none';
   });
 
-  if(activeSlider){
-    updateSlider(activeSlider,Number(activeSlider.dataset.activeIndex || 0));
-    startSlider(activeSlider);
-  }else{
-    stopSlider();
-  }
+  cards.forEach(card=>{
+    card.style.display='';
+  });
+
+  if(mode==='project') applyLayout(cards);
+}
+
+function folderCardsFor(category){
+  const cards=[...document.querySelectorAll(`.wcard[data-cat="${category}"]`)];
+  const seen=new Set();
+
+  return cards.filter(card=>{
+    const brand=card.dataset.brand||card.dataset.folderLabel||card.dataset.cat;
+    if(seen.has(brand)) return false;
+    seen.add(brand);
+    return true;
+  });
+}
+
+function openBrand(category,brand){
+  activeCategory=category;
+  activeBrand=brand;
+  const back=document.getElementById('workBack');
+  if(back) back.hidden=false;
+
+  const cards=[...document.querySelectorAll(`.wcard[data-cat="${category}"][data-brand="${brand}"]`)];
+  showCards(cards,{mode:'project'});
+  cards.forEach(card=>card.classList.add('is-open-project'));
+}
+
+function showFolders(category){
+  activeCategory=category;
+  activeBrand=null;
+  const back=document.getElementById('workBack');
+  if(back) back.hidden=true;
+
+  const folders=folderCardsFor(category);
+  showCards(folders,{mode:'folder'});
+
+  folders.forEach(card=>{
+    const label=card.dataset.folderLabel||card.dataset.brand||category;
+    card.classList.add('is-folder');
+    card.setAttribute('role','button');
+    card.tabIndex=0;
+    card.setAttribute('aria-label',`Open ${label} projects`);
+    card.onclick=()=>openBrand(category,card.dataset.brand);
+    card.onkeydown=(event)=>{
+      if(event.key==='Enter'||event.key===' '){
+        event.preventDefault();
+        openBrand(category,card.dataset.brand);
+      }
+    };
+  });
 }
 
 function fwork(btn,cat){
   document.querySelectorAll('.wf').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
 
-  const grid=document.getElementById('wGrid');
-  if(cat==='events'){
-    grid.hidden=true;
-    showSlider(cat);
+  activeCategory=cat;
+  activeBrand=null;
+
+  if(cat==='all'){
+    const back=document.getElementById('workBack');
+    if(back) back.hidden=true;
+
+    const cards=[...document.querySelectorAll('.wcard')].filter(card=>card.dataset.all!=='false');
+    showCards(cards,{mode:'project'});
     return;
   }
 
-  showSlider(null);
-  grid.hidden=false;
-  document.querySelectorAll('.wcard').forEach(c=>{
-    c.style.display=cat==='all'||c.dataset.cat===cat?'':'none';
-  });
+  showFolders(cat);
 }
 
 export function initWorkFilter(){
@@ -65,22 +113,16 @@ export function initWorkFilter(){
     btn.addEventListener('click',()=>fwork(btn,btn.dataset.workFilter));
   });
 
-  document.querySelectorAll('[data-project-slider]').forEach(slider=>{
-    const total=slider.querySelector('[data-slider-total]');
-    const slides=slider.querySelectorAll('.project-slide');
-    if(total)total.textContent=String(slides.length).padStart(2,'0');
+  const back=document.getElementById('workBack');
+  if(back){
+    back.addEventListener('click',()=>{
+      if(activeCategory&&activeCategory!=='all') showFolders(activeCategory);
+    });
+  }
 
-    slider.querySelector('[data-slider-prev]')?.addEventListener('click',()=>{
-      advanceSlider(slider,-1);
-      startSlider(slider);
-    });
-    slider.querySelector('[data-slider-next]')?.addEventListener('click',()=>{
-      advanceSlider(slider,1);
-      startSlider(slider);
-    });
-    slider.addEventListener('mouseenter',stopSlider);
-    slider.addEventListener('mouseleave',()=>startSlider(slider));
-  });
+  const active=document.querySelector('[data-work-filter].on')||document.querySelector('[data-work-filter]');
+  if(active) fwork(active,active.dataset.workFilter);
 
   window.fwork=fwork;
+  window.openWorkBrand=openBrand;
 }

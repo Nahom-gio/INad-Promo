@@ -20,70 +20,51 @@
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   column-gap:3rem;
-  perspective:1100px;
 }
 .svc-item{
-  --svc-glow:rgba(66,177,219,.24);
   display:grid;
   grid-template-columns:5rem 1fr auto;
   gap:0 2.5rem;
   align-items:center;
   padding:2.1rem 1.1rem;
   border-top:1px solid var(--rule);
-  transform-style:preserve-3d;
-  will-change:transform;
-  transition:background .4s,transform .28s var(--ease),box-shadow .4s,border-color .4s;
+  transition:background .35s var(--ease),border-color .35s var(--ease);
   position:relative;
   color:inherit;
   text-decoration:none;
 }
-.svc-item:nth-child(1){--svc-glow:rgba(66,177,219,.28);}
-.svc-item:nth-child(2){--svc-glow:rgba(65,62,117,.34);}
-.svc-item:nth-child(3){--svc-glow:rgba(225,167,67,.24);}
-.svc-item:nth-child(4){--svc-glow:rgba(243,139,89,.25);}
-.svc-item:nth-child(5){--svc-glow:rgba(236,56,146,.26);}
-.svc-item:nth-child(6){--svc-glow:rgba(66,177,219,.22);}
 .svc-item:last-child{border-bottom:1px solid var(--rule);}
 .svc-item::before{
   content:'';
   position:absolute;inset:0;
-  background:linear-gradient(90deg,rgba(66,177,219,.08),rgba(236,56,146,.055));
+  background:linear-gradient(90deg,rgba(66,177,219,.055),rgba(236,56,146,.035));
   opacity:0;
   transition:opacity .35s var(--ease);
   pointer-events:none;
 }
 .svc-item:hover,
 .svc-item:focus-visible{
-  background:rgba(240,233,220,.025);
-  box-shadow:0 18px 50px rgba(0,0,0,.18),0 18px 70px var(--svc-glow);
-}
-.svc-item.is-tilting{
-  transition:background .4s,box-shadow .4s,border-color .4s;
-  box-shadow:0 22px 70px rgba(0,0,0,.22),0 20px 80px var(--svc-glow);
+  background:rgba(240,233,220,.03);
+  border-color:rgba(240,233,220,.18);
 }
 .svc-item:hover::before,
 .svc-item:focus-visible::before{opacity:1;}
 .svc-num{
   font-family:var(--font-d);
   font-size:1rem;font-weight:300;
-  color:rgba(240,233,220,.62);
+  color:rgba(240,233,220,.72);
   letter-spacing:.1em;
   transition:color .3s;
 }
 .svc-item:hover .svc-num,
 .svc-item:focus-visible .svc-num{color:var(--cyan);}
 .svc-body{position:relative;z-index:1;}
-.svc-num,
-.svc-body,
-.svc-arrow{
-  transform:translateZ(18px);
-}
 .svc-name{
   font-family:var(--font-d);
   font-size:clamp(1.4rem,2.5vw,2.1rem);
   font-weight:300;
   letter-spacing:-.01em;
-  color:rgba(240,233,220,.92);
+  color:rgba(240,233,220,.98);
   margin-bottom:.45rem;
   transition:color .3s;
 }
@@ -92,8 +73,8 @@
 .svc-desc{
   max-width:34rem;
   margin-bottom:.8rem;
-  color:rgba(240,233,220,.66);
-  font-size:.78rem;
+  color:rgba(240,233,220,.78);
+  font-size:.82rem;
   font-weight:400;
   line-height:1.75;
 }
@@ -103,8 +84,8 @@
 .svc-tag{
   font-family:var(--font-b);
   font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(240,233,220,.78);
-  border:1px solid rgba(240,233,220,.24);
+  color:rgba(240,233,220,.86);
+  border:1px solid rgba(240,233,220,.32);
   padding:.2rem .6rem;
   transition:border-color .3s,color .3s;
 }
@@ -113,15 +94,14 @@
 .svc-arrow{
   position:relative;
   z-index:1;
-  font-size:1.45rem;color:rgba(240,233,220,.76);
-  transition:transform .4s var(--ease),color .3s,text-shadow .3s;
+  font-size:1.45rem;color:rgba(240,233,220,.86);
+  transition:transform .35s var(--ease),color .3s;
   line-height:1;
 }
 .svc-item:hover .svc-arrow,
 .svc-item:focus-visible .svc-arrow{
-  transform:translate3d(4px,-4px,30px) scale(1.16);
+  transform:translate(3px,-3px);
   color:#fff;
-  text-shadow:0 0 18px rgba(236,56,146,.35);
 }
 .services-cta{
   margin:3rem auto 0;

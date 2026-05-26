@@ -1,0 +1,64 @@
+{
+  "kind": "collectionType",
+  "collectionName": "project_brands",
+  "info": {
+    "singularName": "project-brand",
+    "pluralName": "project-brands",
+    "displayName": "Project Brand",
+    "description": "Brand folder and gallery data for the Selected Projects section"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "btl",
+        "events",
+        "branding",
+        "print"
+      ],
+      "required": true
+    },
+    "folderLabel": {
+      "type": "string"
+    },
+    "brandLabel": {
+      "type": "string"
+    },
+    "campaignTitle": {
+      "type": "string"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
+    "showInAll": {
+      "type": "boolean",
+      "default": false
+    },
+    "coverImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "project.project-image"
+    }
+  }
+}

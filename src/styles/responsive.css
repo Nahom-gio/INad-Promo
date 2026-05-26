@@ -12,6 +12,7 @@
   #hero{padding:0 4vw;}
   .about-grid{grid-template-columns:1fr;gap:3.8rem;}
   .work-grid{grid-template-columns:1fr 1fr;}
+  .work-grid.is-folder-view{grid-template-columns:1fr 1fr;}
   .wcard:nth-child(n){grid-column:span 1;aspect-ratio:4/3;}
   .why-grid{grid-template-columns:1fr 1fr;}
   .test-featured{grid-template-columns:1fr;}
@@ -19,7 +20,6 @@
   .contact-layout{grid-template-columns:1fr;gap:5rem;}
   .footer-main{grid-template-columns:1fr 1fr;gap:3rem;}
   .footer-brand{grid-column:span 2;}
-  #industries{padding:4.2rem 4vw;}
   .ind-grid{grid-template-columns:repeat(3,1fr);}
   .svc-intro{grid-template-columns:1fr;gap:1.5rem;}
   .svc-list{grid-template-columns:1fr;}
@@ -42,7 +42,7 @@
   #hero{min-height:720px;padding:0 4.5vw;}
   .hero-bg{background-position:58% center;}
   .hero-copy-panel{padding:3.4rem 1.15rem 3rem;max-width:100%;}
-  .hero-copy-panel::before{inset:-1rem -.55rem;background:radial-gradient(ellipse at 50% 45%,rgba(9,8,11,.82) 0%,rgba(9,8,11,.56) 46%,rgba(9,8,11,.2) 72%,transparent 100%);}
+  .hero-copy-panel::before{display:none;}
   .hero-eyebrow{font-size:.58rem;letter-spacing:.24em;gap:.55rem;margin-bottom:1.8rem;line-height:1.7;}
   .hero-eyebrow::before,
   .hero-eyebrow::after{width:18px;}
@@ -118,18 +118,11 @@
   .hero-sub{font-size:.92rem;line-height:1.78;}
   .hero-scroll{display:none;}
   .work-grid{grid-template-columns:1fr;}
+  .work-grid.is-folder-view{grid-template-columns:1fr;}
   .work-head{align-items:flex-start;}
   .work-filters{width:100%;}
   .wf{flex:1 1 calc(50% - .55rem);padding:.5rem .65rem;}
   .wcard:nth-child(n){aspect-ratio:4/3;min-height:230px;}
-  .project-slider-stage{aspect-ratio:4/5;min-height:360px;}
-  .project-nav{width:44px;height:44px;font-size:1.6rem;}
-  .project-prev{left:.8rem;}
-  .project-next{right:.8rem;}
-  .project-count{right:1rem;bottom:1rem;}
-  .ind-label{margin-bottom:1.6rem;}
-  .ind-item{width:150px;height:92px;padding:1rem;}
-  .ind-item img{max-height:54px;}
   #process{padding-block:4.4rem;}
   .process-head{margin-bottom:2.2rem;}
   .process-steps{gap:1.55rem;}
