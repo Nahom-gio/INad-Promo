@@ -1,11 +1,6 @@
 const STRAPI_URL=(import.meta.env.VITE_STRAPI_URL||'').replace(/\/$/,'');
-const STRAPI_TOKEN=import.meta.env.VITE_STRAPI_TOKEN||'';
 const CACHE_TTL=10*60*1000;
 const CACHE_PREFIX='inad:strapi:';
-
-function headers(){
-  return STRAPI_TOKEN ? {Authorization:`Bearer ${STRAPI_TOKEN}`} : {};
-}
 
 function attrs(entry){
   return entry?.attributes||entry||{};
@@ -47,7 +42,7 @@ async function get(path){
   if(cached) return cached;
 
   try{
-    const response=await fetch(`${STRAPI_URL}/api/${path}`,{headers:headers()});
+    const response=await fetch(`${STRAPI_URL}/api/${path}`);
     if(!response.ok) throw new Error(`Strapi request failed: ${path}`);
     const data=await response.json();
     writeCache(cacheKey,data);
@@ -96,27 +91,12 @@ function setText(selector,value){
 
 function hydrateAbout(about){
   const source=document.querySelector('.about-logo-frame video source');
-  const videoEl=document.querySelector('.about-logo-frame video');
-  if(!source||!videoEl) return;
-
-  const fallback=videoEl.dataset.fallbackSrc||source.src;
-  let usingFallback=source.getAttribute('src')===fallback;
-
-  videoEl.addEventListener('error',()=>{
-    if(usingFallback) return;
-    usingFallback=true;
-    source.src=fallback;
-    videoEl.load();
-  },{once:false});
+  if(!source) return;
 
   if(!about) return;
 
   const video=mediaUrl(about.video);
-  if(video){
-    usingFallback=false;
-    source.src=video;
-    videoEl.load();
-  }
+  if(video) source.dataset.src=video;
 }
 
 function projectCard({category,brand,folderLabel,brandLabel,title,image,alt,showInAll=false,delay='d1'}){

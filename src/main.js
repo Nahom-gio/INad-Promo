@@ -1,3 +1,4 @@
+import { initAboutMedia } from './js/aboutMedia.js';
 import { initContactForm } from './js/contactForm.js';
 import { initCursor } from './js/cursor.js';
 import { initHeroParallax } from './js/heroParallax.js';
@@ -13,6 +14,7 @@ import { renderPage } from './renderPage.js';
 async function boot(){
   renderPage();
   await initStrapiContent();
+  initAboutMedia();
   initCursor();
   initNavigation();
   initMobileMenu();

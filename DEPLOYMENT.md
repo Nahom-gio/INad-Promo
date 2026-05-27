@@ -15,10 +15,7 @@ Environment variables:
 
 ```env
 VITE_STRAPI_URL=https://your-strapi-domain.com
-VITE_STRAPI_TOKEN=
 ```
-
-Use `VITE_STRAPI_TOKEN` only if the Strapi API is private. For public website content, public `find` permissions are usually simpler.
 
 ## Strapi Hosting
 
@@ -49,6 +46,8 @@ Enable `find` for:
 - `about-section`
 - `project-brand`
 - `client-logo`
+
+Keep the website content public-read only for just these content types. Do not ship a private Strapi API token in the browser for a public marketing site.
 
 ## Local URLs
 

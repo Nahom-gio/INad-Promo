@@ -8,10 +8,7 @@ Create `.env` from `.env.example`:
 
 ```env
 VITE_STRAPI_URL=http://localhost:1337
-VITE_STRAPI_TOKEN=
 ```
-
-Use `VITE_STRAPI_TOKEN` only if your Strapi API is private.
 
 ## Content Types
 
@@ -62,6 +59,8 @@ The frontend currently reads:
 - `/api/about-section?populate=*`
 - `/api/project-brands?populate[coverImage]=true&populate[items][populate][image]=true&sort=order:asc`
 - `/api/client-logos?populate=logo&sort=order:asc`
+
+For a public landing page, expose only these content types with public `find` permissions. Avoid relying on a private API token in the browser.
 
 ## How Projects Render
 
