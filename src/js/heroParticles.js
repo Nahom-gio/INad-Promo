@@ -18,6 +18,7 @@ export function initHeroParticles(){
   let dpr = 1;
   let particles = [];
   let frame = null;
+  let visible = true;
 
   const buildParticles = () => {
     const area = width * height;
@@ -111,17 +112,27 @@ export function initHeroParticles(){
       ctx.globalAlpha = 1;
     });
 
-    frame = requestAnimationFrame(draw);
+    if(visible) frame = requestAnimationFrame(draw);
   };
 
   window.addEventListener('resize', resize, { passive:true });
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden && frame) {
+  const syncAnimation = () => {
+    if((document.hidden||!visible)&&frame){
       cancelAnimationFrame(frame);
-      frame = null;
-    } else if (!document.hidden && !frame) {
-      frame = requestAnimationFrame(draw);
+      frame=null;
+    }else if(!document.hidden&&visible&&!frame){
+      frame=requestAnimationFrame(draw);
     }
+  };
+
+  const observer=new IntersectionObserver(entries=>{
+    visible=entries.some(entry=>entry.isIntersecting);
+    syncAnimation();
+  });
+  observer.observe(hero);
+
+  document.addEventListener('visibilitychange', () => {
+    syncAnimation();
   });
 
   resize();

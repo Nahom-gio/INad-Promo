@@ -25,7 +25,7 @@ async function handleForm(e){
       throw new Error(result.message || 'Submission failed');
     }
 
-    status.textContent='\u2713 Thank you \u2014 we will be in touch within 24 hours.';
+    status.textContent='\u2713 Thank you \u2014 your message has been sent.';
     status.style.display='block';
     btn.textContent='Message Sent \u2713';
     form.reset();
@@ -41,6 +41,4 @@ async function handleForm(e){
 
 export function initContactForm(){
   document.getElementById('cform')?.addEventListener('submit',handleForm);
-
-  window.handleForm=handleForm;
 }

@@ -122,7 +122,10 @@ export function initWorkFilter(){
 
   const active=document.querySelector('[data-work-filter].on')||document.querySelector('[data-work-filter]');
   if(active) fwork(active,active.dataset.workFilter);
+}
 
-  window.fwork=fwork;
-  window.openWorkBrand=openBrand;
+export function refreshWorkFilter(){
+  const active=document.querySelector(`[data-work-filter="${activeCategory}"]`)
+    ||document.querySelector('[data-work-filter="all"]');
+  if(active) fwork(active,active.dataset.workFilter);
 }

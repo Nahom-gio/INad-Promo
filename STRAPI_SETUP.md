@@ -1,6 +1,6 @@
 # Strapi CMS Setup
 
-The frontend works without Strapi. When `VITE_STRAPI_URL` is set, it hydrates editable content from Strapi and falls back to the static HTML if the API is unavailable.
+The frontend shell works without Strapi. When `VITE_STRAPI_URL` is set, it hydrates editable content from Strapi. The about video falls back to a bundled local video if the API is unavailable. Projects and client logos show an honest unavailable state because those collections do not have bundled static content.
 
 ## Environment
 
@@ -57,10 +57,12 @@ Fields:
 The frontend currently reads:
 
 - `/api/about-section?populate=*`
-- `/api/project-brands?populate[coverImage]=true&populate[items][populate][image]=true&sort=order:asc`
-- `/api/client-logos?populate=logo&sort=order:asc`
+- `/api/project-brands?populate[coverImage]=true&populate[items][populate][image]=true&sort=order:asc&pagination[pageSize]=100`
+- `/api/client-logos?populate=logo&sort=order:asc&pagination[pageSize]=100`
 
 For a public landing page, expose only these content types with public `find` permissions. Avoid relying on a private API token in the browser.
+
+The landing page intentionally caps each collection at 100 entries. If either collection needs to grow beyond that, add an explicit product decision for pagination or a larger capped query instead of relying on Strapi defaults.
 
 ## How Projects Render
 
@@ -68,6 +70,7 @@ For a public landing page, expose only these content types with public `find` pe
 - Category tabs show brand/folder cards first.
 - Clicking a folder opens the images in that brand's `items`.
 - `category` must match one of the existing tab ids: `btl`, `events`, `branding`, `print`.
+- `slug` and `category` are required rendering contracts. The frontend skips malformed records rather than deriving behavior from labels.
 
 ## How Client Logos Render
 

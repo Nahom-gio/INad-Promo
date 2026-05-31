@@ -8,10 +8,15 @@ function loadVideo(videoEl,sourceEl){
   void videoEl.play().catch(()=>{});
 }
 
+function loadAboutBackground(aboutEl){
+  aboutEl.classList.add('has-background');
+}
+
 export function initAboutMedia(){
+  const aboutEl=document.getElementById('about');
   const videoEl=document.querySelector('.about-logo-frame video');
   const sourceEl=videoEl?.querySelector('source');
-  if(!videoEl||!sourceEl) return;
+  if(!aboutEl||!videoEl||!sourceEl) return;
 
   const fallbackSrc=videoEl.dataset.fallbackSrc||sourceEl.dataset.src||'';
 
@@ -24,6 +29,7 @@ export function initAboutMedia(){
   });
 
   if(!('IntersectionObserver' in window)){
+    loadAboutBackground(aboutEl);
     loadVideo(videoEl,sourceEl);
     return;
   }
@@ -32,6 +38,7 @@ export function initAboutMedia(){
     const visible=entries.some(entry=>entry.isIntersecting);
     if(!visible) return;
 
+    loadAboutBackground(aboutEl);
     loadVideo(videoEl,sourceEl);
     observer.disconnect();
   },{
@@ -39,5 +46,5 @@ export function initAboutMedia(){
     threshold:0.15,
   });
 
-  observer.observe(videoEl);
+  observer.observe(aboutEl);
 }

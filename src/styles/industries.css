@@ -200,6 +200,10 @@
   letter-spacing:.3em;
   text-transform:uppercase;
 }
+.clients-status{
+  margin-top:1.5rem;
+  text-align:center;
+}
 
 @keyframes marquee{
   from{transform:translateX(0);}

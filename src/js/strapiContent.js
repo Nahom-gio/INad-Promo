@@ -1,6 +1,7 @@
 const STRAPI_URL=(import.meta.env.VITE_STRAPI_URL||'').replace(/\/$/,'');
 const CACHE_TTL=10*60*1000;
 const CACHE_PREFIX='inad:strapi:';
+const PROJECT_CATEGORY_IDS=new Set(['btl','events','branding','print']);
 
 function attrs(entry){
   return entry?.attributes||entry||{};
@@ -15,9 +16,10 @@ function many(response){
   return Array.isArray(data) ? data.map(attrs) : [];
 }
 
-function mediaUrl(media){
+function mediaUrl(media,formats=[]){
   const item=media?.data ? attrs(media.data) : attrs(media);
-  const url=item?.url;
+  const variant=formats.map(format=>item?.formats?.[format]).find(Boolean);
+  const url=variant?.url||item?.url;
   if(!url) return '';
   return url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
 }
@@ -83,10 +85,11 @@ function writeCache(key,data){
   }
 }
 
-function setText(selector,value){
-  if(value===undefined||value===null||value==='') return;
+function setStatus(selector,value,{hidden=false}={}){
   const el=document.querySelector(selector);
-  if(el) el.textContent=value;
+  if(!el) return;
+  el.textContent=value;
+  el.hidden=hidden;
 }
 
 function hydrateAbout(about){
@@ -96,13 +99,21 @@ function hydrateAbout(about){
   if(!about) return;
 
   const video=mediaUrl(about.video);
-  if(video) source.dataset.src=video;
+  if(!video) return;
+
+  source.dataset.src=video;
+  if(source.hasAttribute('src')&&source.getAttribute('src')!==video){
+    const videoEl=source.closest('video');
+    source.setAttribute('src',video);
+    videoEl?.load();
+    void videoEl?.play().catch(()=>{});
+  }
 }
 
 function projectCard({category,brand,folderLabel,brandLabel,title,image,alt,showInAll=false,delay='d1'}){
   const dataAll=showInAll ? '' : ' data-all="false"';
   const media=image
-    ? `<img class="wphoto" src="${escapeHtml(image)}" alt="${escapeHtml(alt||title)}" loading="lazy">`
+    ? `<img class="wphoto" src="${escapeHtml(image)}" alt="${escapeHtml(alt||title)}" loading="lazy" decoding="async">`
     : `<div class="wbg" style="background:linear-gradient(135deg,#101522,#172738,#2a1023);"></div>`;
 
   return `
@@ -117,18 +128,21 @@ function projectCard({category,brand,folderLabel,brandLabel,title,image,alt,show
 }
 
 function hydrateProjects(brands){
-  if(!brands.length) return;
-
   const grid=document.getElementById('wGrid');
   if(!grid) return;
 
   const cards=[];
   brands.forEach((brand,index)=>{
-    const category=brand.category||'events';
-    const slug=brand.slug||brand.name?.toLowerCase().replace(/\s+/g,'-')||`brand-${index}`;
+    const category=brand.category;
+    const slug=brand.slug;
+    if(!slug||!PROJECT_CATEGORY_IDS.has(category)){
+      console.warn('[Strapi] Skipping project brand with an invalid required slug or category.',brand);
+      return;
+    }
+
     const folderLabel=brand.folderLabel||brand.name||brand.brandLabel||slug;
     const items=Array.isArray(brand.items) ? brand.items.map(attrs) : [];
-    const cover=mediaUrl(brand.coverImage)||mediaUrl(items[0]?.image);
+    const cover=mediaUrl(brand.coverImage,['large','medium','small'])||mediaUrl(items[0]?.image,['large','medium','small']);
     const visibleInAll=Boolean(brand.showInAll);
 
     if(items.length){
@@ -139,7 +153,7 @@ function hydrateProjects(brands){
           folderLabel,
           brandLabel:brand.brandLabel||folderLabel,
           title:item.title||brand.campaignTitle||folderLabel,
-          image:mediaUrl(item.image)||cover,
+          image:mediaUrl(item.image,['large','medium','small'])||cover,
           alt:item.alt||item.title||brand.campaignTitle,
           showInAll:visibleInAll&&itemIndex===0,
           delay:`d${(itemIndex%4)+1}`,
@@ -162,39 +176,47 @@ function hydrateProjects(brands){
   });
 
   grid.innerHTML=cards.join('\n');
+  setStatus('.work-status',cards.length ? '' : 'No selected projects are published yet.',{hidden:Boolean(cards.length)});
+  document.dispatchEvent(new CustomEvent('inad:projects-hydrated',{detail:{root:grid}}));
 }
 
 function clientLogoCard(logo,hidden=false){
   const name=logo.name||logo.alt||'Client logo';
-  const image=mediaUrl(logo.logo);
+  const image=mediaUrl(logo.logo,['small','thumbnail']);
   if(!image) return '';
 
   return `
     <div class="ind-item"${hidden ? ' aria-hidden="true"' : ''}>
-      <img src="${escapeHtml(image)}" alt="${hidden ? '' : escapeHtml(logo.alt||name)}" loading="lazy">
+      <img src="${escapeHtml(image)}" alt="${hidden ? '' : escapeHtml(logo.alt||name)}" loading="lazy" decoding="async">
     </div>`;
 }
 
 function hydrateClientLogos(logos){
-  if(!logos.length) return;
-
   const track=document.querySelector('.client-track');
   if(!track) return;
 
   const visible=logos.map(logo=>clientLogoCard(logo,false)).filter(Boolean);
   const duplicate=logos.map(logo=>clientLogoCard(logo,true)).filter(Boolean);
-  if(!visible.length) return;
+  if(!visible.length){
+    setStatus('.clients-status','Client logos are currently unavailable.');
+    return;
+  }
 
   track.innerHTML=[...visible,...duplicate].join('\n');
+  setStatus('.clients-status','',{hidden:true});
 }
 
 export async function initStrapiContent(){
-  if(!STRAPI_URL) return;
+  if(!STRAPI_URL){
+    setStatus('.work-status','Selected projects are currently unavailable.');
+    setStatus('.clients-status','Client logos are currently unavailable.');
+    return;
+  }
 
   const requests=[
     ['about',get('about-section?populate=*')],
-    ['projects',get('project-brands?populate[coverImage]=true&populate[items][populate][image]=true&sort=order:asc')],
-    ['logos',get('client-logos?populate=logo&sort=order:asc')],
+    ['projects',get('project-brands?populate[coverImage]=true&populate[items][populate][image]=true&sort=order:asc&pagination[pageSize]=100')],
+    ['logos',get('client-logos?populate=logo&sort=order:asc&pagination[pageSize]=100')],
   ];
 
   const results=await Promise.allSettled(requests.map(([,request])=>request));
@@ -203,6 +225,8 @@ export async function initStrapiContent(){
     const key=requests[index][0];
     if(result.status==='rejected'){
       console.warn(`[Strapi] ${key} content unavailable.`,result.reason);
+      if(key==='projects') setStatus('.work-status','Selected projects are currently unavailable.');
+      if(key==='logos') setStatus('.clients-status','Client logos are currently unavailable.');
       return;
     }
 

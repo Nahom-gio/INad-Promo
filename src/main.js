@@ -6,14 +6,22 @@ import { initHeroParticles } from './js/heroParticles.js';
 import { initHeroWord } from './js/heroWord.js';
 import { initMobileMenu } from './js/mobileMenu.js';
 import { initNavigation } from './js/navigation.js';
-import { initReveal } from './js/reveal.js';
+import { initReveal, observeRevealElements } from './js/reveal.js';
 import { initStrapiContent } from './js/strapiContent.js';
-import { initWorkFilter } from './js/workFilter.js';
+import { initWorkFilter, refreshWorkFilter } from './js/workFilter.js';
 import { renderPage } from './renderPage.js';
 
-async function boot(){
+function loadDeferredContent(){
+  const hydrate=()=>void initStrapiContent();
+  if('requestIdleCallback' in window){
+    window.requestIdleCallback(hydrate,{timeout:1500});
+  }else{
+    window.setTimeout(hydrate,0);
+  }
+}
+
+function boot(){
   renderPage();
-  await initStrapiContent();
   initAboutMedia();
   initCursor();
   initNavigation();
@@ -24,6 +32,15 @@ async function boot(){
   initHeroWord();
   initHeroParallax();
   initHeroParticles();
+  document.addEventListener('inad:projects-hydrated',event=>{
+    refreshWorkFilter();
+    observeRevealElements(event.detail.root);
+  });
+  if(document.readyState==='complete'){
+    loadDeferredContent();
+  }else{
+    window.addEventListener('load',loadDeferredContent,{once:true});
+  }
 }
 
 boot();

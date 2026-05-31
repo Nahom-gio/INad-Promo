@@ -22,10 +22,16 @@
   background:
     radial-gradient(ellipse at 36% 48%,rgba(8,8,10,.08),rgba(8,8,10,.52) 66%,rgba(8,8,10,.82) 100%),
     linear-gradient(90deg,rgba(8,8,10,.48),rgba(8,8,10,.2) 50%,rgba(8,8,10,.55)),
-    linear-gradient(rgba(8,8,10,.16),rgba(8,8,10,.42)),
-    url('/background/about-bg.jpg') center/cover no-repeat;
+    linear-gradient(rgba(8,8,10,.16),rgba(8,8,10,.42));
   opacity:.82;
   pointer-events:none;
+}
+#about.has-background::before{
+  background:
+    radial-gradient(ellipse at 36% 48%,rgba(8,8,10,.08),rgba(8,8,10,.52) 66%,rgba(8,8,10,.82) 100%),
+    linear-gradient(90deg,rgba(8,8,10,.48),rgba(8,8,10,.2) 50%,rgba(8,8,10,.55)),
+    linear-gradient(rgba(8,8,10,.16),rgba(8,8,10,.42)),
+    url('/background/about-bg.jpg') center/cover no-repeat;
 }
 #about::after{
   content:'';

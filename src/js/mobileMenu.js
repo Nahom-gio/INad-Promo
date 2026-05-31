@@ -29,7 +29,4 @@ export function initMobileMenu(){
   document.addEventListener('keydown',e=>{
     if(e.key==='Escape')closeMob();
   });
-
-  window.toggleMob=toggleMob;
-  window.closeMob=closeMob;
 }

@@ -74,6 +74,27 @@
 .section{padding:9rem 5vw;}
 .section-sm{padding:6rem 5vw;}
 
+.content-status{
+  color:var(--parch-3);
+  font-size:.78rem;
+  letter-spacing:.08em;
+  line-height:1.7;
+}
+
+#about,
+.ticker,
+#services,
+#process,
+#work,
+#why,
+#testimonials,
+#industries,
+#contact,
+footer{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 900px;
+}
+
 .label{
   font-family:var(--font-b);
   font-size:.6rem;font-weight:400;

@@ -53,6 +53,7 @@
   gap:1.5px;
 }
 .work-grid[hidden]{display:none;}
+.work-status{margin-bottom:1.5rem;}
 .wcard{
   position:relative;overflow:hidden;
   cursor:none;
