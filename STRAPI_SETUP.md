@@ -1,6 +1,6 @@
 # Strapi CMS Setup
 
-The frontend shell works without Strapi. When `VITE_STRAPI_URL` is set, it hydrates editable content from Strapi. The about video falls back to a bundled local video if the API is unavailable. Projects and client logos show an honest unavailable state because those collections do not have bundled static content.
+The frontend shell works without Strapi. When `VITE_STRAPI_URL` is set, it hydrates editable content from Strapi. The about video falls back to a bundled local video if the API is unavailable. If projects are unavailable, the work section hides inactive filters and shows a contact path for requesting the portfolio. Client logos show an honest unavailable state because they do not have bundled static content.
 
 ## Environment
 
@@ -63,6 +63,8 @@ The frontend currently reads:
 For a public landing page, expose only these content types with public `find` permissions. Avoid relying on a private API token in the browser.
 
 The landing page intentionally caps each collection at 100 entries. If either collection needs to grow beyond that, add an explicit product decision for pagination or a larger capped query instead of relying on Strapi defaults.
+
+The production CMS is hosted on Strapi Cloud. Set the frontend `VITE_STRAPI_URL` to the Strapi Cloud project URL in Vercel. Keep SQLite for local CMS development only.
 
 ## How Projects Render
 

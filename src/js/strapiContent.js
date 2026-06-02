@@ -92,6 +92,31 @@ function setStatus(selector,value,{hidden=false}={}){
   el.hidden=hidden;
 }
 
+function showProjectsUnavailable(message='Our project gallery is being updated. Contact us to request a relevant portfolio.'){
+  const grid=document.getElementById('wGrid');
+  const filters=document.querySelector('.work-filters');
+  const back=document.getElementById('workBack');
+
+  if(grid){
+    grid.innerHTML='';
+    grid.hidden=true;
+  }
+  if(filters) filters.hidden=true;
+  if(back) back.hidden=true;
+  setStatus('.work-status','',{hidden:true});
+  setStatus('.work-fallback-message',message);
+  document.querySelector('.work-fallback')?.removeAttribute('hidden');
+}
+
+function showProjects(){
+  const grid=document.getElementById('wGrid');
+  const filters=document.querySelector('.work-filters');
+
+  if(grid) grid.hidden=false;
+  if(filters) filters.hidden=false;
+  document.querySelector('.work-fallback')?.setAttribute('hidden','');
+}
+
 function hydrateAbout(about){
   const source=document.querySelector('.about-logo-frame video source');
   if(!source) return;
@@ -175,8 +200,14 @@ function hydrateProjects(brands){
     }));
   });
 
+  if(!cards.length){
+    showProjectsUnavailable();
+    return;
+  }
+
+  showProjects();
   grid.innerHTML=cards.join('\n');
-  setStatus('.work-status',cards.length ? '' : 'No selected projects are published yet.',{hidden:Boolean(cards.length)});
+  setStatus('.work-status','',{hidden:true});
   document.dispatchEvent(new CustomEvent('inad:projects-hydrated',{detail:{root:grid}}));
 }
 
@@ -208,7 +239,7 @@ function hydrateClientLogos(logos){
 
 export async function initStrapiContent(){
   if(!STRAPI_URL){
-    setStatus('.work-status','Selected projects are currently unavailable.');
+    showProjectsUnavailable();
     setStatus('.clients-status','Client logos are currently unavailable.');
     return;
   }
@@ -225,7 +256,7 @@ export async function initStrapiContent(){
     const key=requests[index][0];
     if(result.status==='rejected'){
       console.warn(`[Strapi] ${key} content unavailable.`,result.reason);
-      if(key==='projects') setStatus('.work-status','Selected projects are currently unavailable.');
+      if(key==='projects') showProjectsUnavailable();
       if(key==='logos') setStatus('.clients-status','Client logos are currently unavailable.');
       return;
     }

@@ -8,8 +8,11 @@ function loadVideo(videoEl,sourceEl){
   void videoEl.play().catch(()=>{});
 }
 
-function loadAboutBackground(aboutEl){
+function loadAboutBackground(aboutEl,videoEl){
   aboutEl.classList.add('has-background');
+  if(videoEl.dataset.posterSrc&&!videoEl.hasAttribute('poster')){
+    videoEl.setAttribute('poster',videoEl.dataset.posterSrc);
+  }
 }
 
 export function initAboutMedia(){
@@ -29,7 +32,7 @@ export function initAboutMedia(){
   });
 
   if(!('IntersectionObserver' in window)){
-    loadAboutBackground(aboutEl);
+    loadAboutBackground(aboutEl,videoEl);
     loadVideo(videoEl,sourceEl);
     return;
   }
@@ -38,11 +41,11 @@ export function initAboutMedia(){
     const visible=entries.some(entry=>entry.isIntersecting);
     if(!visible) return;
 
-    loadAboutBackground(aboutEl);
+    loadAboutBackground(aboutEl,videoEl);
     loadVideo(videoEl,sourceEl);
     observer.disconnect();
   },{
-    rootMargin:'240px 0px',
+    rootMargin:window.matchMedia('(max-width: 768px)').matches ? '0px' : '240px 0px',
     threshold:0.15,
   });
 

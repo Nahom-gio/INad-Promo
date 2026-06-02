@@ -19,10 +19,13 @@ export function initHeroParticles(){
   let particles = [];
   let frame = null;
   let visible = true;
+  let compact = false;
 
   const buildParticles = () => {
     const area = width * height;
-    const count = Math.min(92, Math.max(42, Math.round(area / 18500)));
+    const count = compact
+      ? Math.min(48, Math.max(26, Math.round(area / 26000)))
+      : Math.min(92, Math.max(42, Math.round(area / 18500)));
     particles = Array.from({ length:count }, (_, index) => ({
       x:Math.random() * width,
       y:Math.random() * height,
@@ -44,7 +47,8 @@ export function initHeroParticles(){
     const rect = hero.getBoundingClientRect();
     width = Math.max(1, rect.width);
     height = Math.max(1, rect.height);
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    compact = width < 768;
+    dpr = Math.min(window.devicePixelRatio || 1, compact ? 1.25 : 2);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     canvas.style.width = `${width}px`;
@@ -81,7 +85,7 @@ export function initHeroParticles(){
         const dx = a.x - b.x;
         const dy = a.y - b.y;
         const distSq = dx * dx + dy * dy;
-        const max = 135;
+        const max = compact ? 105 : 135;
         if (distSq < max * max) {
           const alpha = (1 - Math.sqrt(distSq) / max) * .18;
           ctx.beginPath();
@@ -95,6 +99,16 @@ export function initHeroParticles(){
     }
 
     particles.forEach((particle) => {
+      if(compact){
+        ctx.globalAlpha = .72;
+        ctx.fillStyle = particle.color;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        return;
+      }
+
       const glow = ctx.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, particle.r * 8);
       glow.addColorStop(0, particle.color);
       glow.addColorStop(1, 'rgba(0,0,0,0)');

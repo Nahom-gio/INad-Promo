@@ -15,7 +15,7 @@
   border:1px solid rgba(240,233,220,.18);
   color:rgba(240,233,220,.76);
   background:none;font-family:var(--font-b);
-  cursor:none;transition:all .3s var(--ease);
+  transition:all .3s var(--ease);
 }
 .wf.on{border-color:rgba(236,56,146,.75);color:var(--parch);background:rgba(236,56,146,.07);}
 .wf:hover{border-color:rgba(240,233,220,.42);color:var(--parch);background:rgba(255,255,255,.035);}
@@ -54,9 +54,24 @@
 }
 .work-grid[hidden]{display:none;}
 .work-status{margin-bottom:1.5rem;}
+.work-fallback{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1.5rem;
+  padding:2rem;
+  border:1px solid rgba(240,233,220,.12);
+  background:rgba(255,255,255,.025);
+}
+.work-fallback[hidden]{display:none;}
+.work-fallback-message{
+  max-width:42rem;
+  color:var(--parch-2);
+  font-size:.92rem;
+  line-height:1.8;
+}
 .wcard{
   position:relative;overflow:hidden;
-  cursor:none;
   background:var(--ink);
   border:1px solid rgba(240,233,220,.055);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.025);

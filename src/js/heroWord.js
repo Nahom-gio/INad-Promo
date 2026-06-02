@@ -11,6 +11,12 @@ export function initHeroWord(){
   let wordIndex=0;
   let charIndex=words[0].length;
   let deleting=false;
+  let timer=null;
+
+  function schedule(delay){
+    window.clearTimeout(timer);
+    if(!document.hidden) timer=window.setTimeout(tick,delay);
+  }
 
   function tick(){
     const current=words[wordIndex];
@@ -18,20 +24,28 @@ export function initHeroWord(){
 
     if(!deleting && charIndex===current.length){
       deleting=true;
-      setTimeout(tick,1400);
+      schedule(1400);
       return;
     }
 
     if(deleting && charIndex===0){
       deleting=false;
       wordIndex=(wordIndex+1)%words.length;
-      setTimeout(tick,180);
+      schedule(180);
       return;
     }
 
     charIndex+=deleting?-1:1;
-    setTimeout(tick,deleting?55:95);
+    schedule(deleting?55:95);
   }
 
-  setTimeout(tick,1000);
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){
+      window.clearTimeout(timer);
+    }else{
+      schedule(180);
+    }
+  });
+
+  schedule(1000);
 }

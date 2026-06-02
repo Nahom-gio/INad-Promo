@@ -35,9 +35,13 @@
   max-width:20rem;
 }
 .why-icon{
-  font-size:2rem;
-  line-height:1;
-  font-variation-settings:'FILL' 0,'wght' 300,'GRAD' 0,'opsz' 32;
+  width:2rem;
+  height:2rem;
+  fill:none;
+  stroke:currentColor;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-width:1.5;
 }
 .why-icon-primary{color:#ffabf3;}
 .why-icon-secondary{color:#00eefc;}

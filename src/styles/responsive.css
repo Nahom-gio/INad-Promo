@@ -95,6 +95,7 @@
   .work-head{margin-bottom:2.3rem;gap:1.4rem;}
   .work-filters{gap:.55rem;}
   .wf{font-size:.62rem;padding:.45rem .9rem;}
+  .work-fallback{flex-direction:column;align-items:flex-start;padding:1.5rem;}
   .wcard{min-height:250px;}
   .woverlay{opacity:.92;}
   .winfo{opacity:1;transform:none;bottom:1.4rem;left:1.35rem;right:1.35rem;}

@@ -17,23 +17,17 @@ Environment variables:
 VITE_STRAPI_URL=https://your-strapi-domain.com
 ```
 
-## Strapi Hosting
+## Strapi Cloud
 
-Do not host Strapi itself on Vercel. Strapi is a long-running Node server and needs persistent file/database storage.
+The production CMS is hosted on Strapi Cloud. Do not host Strapi itself on Vercel.
 
-Recommended hosts:
+In Vercel, set:
 
-- Render
-- Railway
-- Fly.io
-- DigitalOcean App Platform
-- VPS
+```env
+VITE_STRAPI_URL=https://your-strapi-cloud-domain
+```
 
-For production Strapi, use:
-
-- PostgreSQL database
-- Persistent uploads storage, such as Cloudinary, S3, or the host's persistent disk
-- Environment variables for app keys, JWT secrets, database, and upload provider
+Strapi Cloud manages the hosted database and uploads storage. The local SQLite configuration remains suitable for local CMS development only.
 
 ## Strapi Public Permissions
 
