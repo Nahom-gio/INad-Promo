@@ -14,7 +14,7 @@ import { renderPage } from './renderPage.js';
 function loadDeferredContent(){
   const hydrate=()=>void initStrapiContent();
   if('requestIdleCallback' in window){
-    window.requestIdleCallback(hydrate,{timeout:1500});
+    window.requestIdleCallback(hydrate,{timeout:800});
   }else{
     window.setTimeout(hydrate,0);
   }
@@ -36,11 +36,7 @@ function boot(){
     refreshWorkFilter();
     observeRevealElements(event.detail.root);
   });
-  if(document.readyState==='complete'){
-    loadDeferredContent();
-  }else{
-    window.addEventListener('load',loadDeferredContent,{once:true});
-  }
+  loadDeferredContent();
 }
 
 boot();

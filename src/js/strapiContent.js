@@ -17,11 +17,19 @@ function many(response){
 }
 
 function mediaUrl(media,formats=[]){
+  return mediaInfo(media,formats).url;
+}
+
+function mediaInfo(media,formats=[]){
   const item=media?.data ? attrs(media.data) : attrs(media);
   const variant=formats.map(format=>item?.formats?.[format]).find(Boolean);
-  const url=variant?.url||item?.url;
-  if(!url) return '';
-  return url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
+  const selected=variant||item;
+  const url=selected?.url||item?.url;
+  return {
+    url:url ? (url.startsWith('http') ? url : `${STRAPI_URL}${url}`) : '',
+    width:selected?.width||item?.width||'',
+    height:selected?.height||item?.height||'',
+  };
 }
 
 function text(value){
@@ -211,29 +219,53 @@ function hydrateProjects(brands){
   document.dispatchEvent(new CustomEvent('inad:projects-hydrated',{detail:{root:grid}}));
 }
 
-function clientLogoCard(logo,hidden=false){
+function clientLogoCard(logo,{hidden=false,priority=false}={}){
   const name=logo.name||logo.alt||'Client logo';
-  const image=mediaUrl(logo.logo,['small','thumbnail']);
-  if(!image) return '';
+  const image=mediaInfo(logo.logo,['small','thumbnail']);
+  if(!image.url) return '';
+  const dimensions=[
+    image.width ? ` width="${escapeHtml(image.width)}"` : '',
+    image.height ? ` height="${escapeHtml(image.height)}"` : '',
+  ].join('');
 
   return `
     <div class="ind-item"${hidden ? ' aria-hidden="true"' : ''}>
-      <img src="${escapeHtml(image)}" alt="${hidden ? '' : escapeHtml(logo.alt||name)}" loading="lazy" decoding="async">
+      <img src="${escapeHtml(image.url)}" alt="${hidden ? '' : escapeHtml(logo.alt||name)}"${dimensions}${priority ? ' data-logo-priority="true"' : ''} loading="${priority ? 'eager' : 'lazy'}" decoding="async">
     </div>`;
+}
+
+function readyClientLogoTrack(track){
+  const priorityImages=[...track.querySelectorAll('img[data-logo-priority="true"]')];
+  const images=priorityImages.length ? priorityImages : [...track.querySelectorAll('.ind-item:not([aria-hidden="true"]) img')];
+  if(!images.length){
+    track.classList.add('is-ready');
+    return;
+  }
+
+  Promise.allSettled(images.map(image=>{
+    if(image.complete) return Promise.resolve();
+    return image.decode ? image.decode() : new Promise(resolve=>{
+      image.addEventListener('load',resolve,{once:true});
+      image.addEventListener('error',resolve,{once:true});
+    });
+  })).then(()=>track.classList.add('is-ready'));
 }
 
 function hydrateClientLogos(logos){
   const track=document.querySelector('.client-track');
   if(!track) return;
 
-  const visible=logos.map(logo=>clientLogoCard(logo,false)).filter(Boolean);
-  const duplicate=logos.map(logo=>clientLogoCard(logo,true)).filter(Boolean);
+  track.classList.remove('is-ready');
+
+  const visible=logos.map((logo,index)=>clientLogoCard(logo,{priority:index<12})).filter(Boolean);
+  const duplicate=logos.map(logo=>clientLogoCard(logo,{hidden:true})).filter(Boolean);
   if(!visible.length){
     setStatus('.clients-status','Client logos are currently unavailable.');
     return;
   }
 
   track.innerHTML=[...visible,...duplicate].join('\n');
+  readyClientLogoTrack(track);
   setStatus('.clients-status','',{hidden:true});
 }
 
