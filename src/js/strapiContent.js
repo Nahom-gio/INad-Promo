@@ -230,7 +230,7 @@ function clientLogoCard(logo,{hidden=false,priority=false}={}){
 
   return `
     <div class="ind-item"${hidden ? ' aria-hidden="true"' : ''}>
-      <img src="${escapeHtml(image.url)}" alt="${hidden ? '' : escapeHtml(logo.alt||name)}"${dimensions}${priority ? ' data-logo-priority="true"' : ''} loading="${priority ? 'eager' : 'lazy'}" decoding="async">
+      <img src="${escapeHtml(image.url)}" alt="${hidden ? '' : escapeHtml(logo.alt||name)}"${dimensions}${priority ? ' data-logo-priority="true" fetchpriority="high"' : ''} loading="${priority ? 'eager' : 'lazy'}" decoding="async">
     </div>`;
 }
 
@@ -276,25 +276,21 @@ export async function initStrapiContent(){
     return;
   }
 
-  const requests=[
-    ['about',get('about-section?populate=*')],
-    ['projects',get('project-brands?populate[coverImage]=true&populate[items][populate][image]=true&sort=order:asc&pagination[pageSize]=100')],
-    ['logos',get('client-logos?populate=logo&sort=order:asc&pagination[pageSize]=100')],
-  ];
+  void get('client-logos?populate=logo&sort=order:asc&pagination[pageSize]=100')
+    .then(response=>hydrateClientLogos(many(response)))
+    .catch(error=>{
+      console.warn('[Strapi] logos content unavailable.',error);
+      setStatus('.clients-status','Client logos are currently unavailable.');
+    });
 
-  const results=await Promise.allSettled(requests.map(([,request])=>request));
+  void get('about-section?populate=*')
+    .then(response=>hydrateAbout(one(response)))
+    .catch(error=>console.warn('[Strapi] about content unavailable.',error));
 
-  results.forEach((result,index)=>{
-    const key=requests[index][0];
-    if(result.status==='rejected'){
-      console.warn(`[Strapi] ${key} content unavailable.`,result.reason);
-      if(key==='projects') showProjectsUnavailable();
-      if(key==='logos') setStatus('.clients-status','Client logos are currently unavailable.');
-      return;
-    }
-
-    if(key==='about') hydrateAbout(one(result.value));
-    if(key==='projects') hydrateProjects(many(result.value));
-    if(key==='logos') hydrateClientLogos(many(result.value));
-  });
+  void get('project-brands?populate[coverImage]=true&populate[items][populate][image]=true&sort=order:asc&pagination[pageSize]=100')
+    .then(response=>hydrateProjects(many(response)))
+    .catch(error=>{
+      console.warn('[Strapi] projects content unavailable.',error);
+      showProjectsUnavailable();
+    });
 }
