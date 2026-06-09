@@ -1,8 +1,5 @@
 import { initAboutMedia } from './js/aboutMedia.js';
 import { initContactForm } from './js/contactForm.js';
-import { initCursor } from './js/cursor.js';
-import { initHeroParallax } from './js/heroParallax.js';
-import { initHeroParticles } from './js/heroParticles.js';
 import { initHeroWord } from './js/heroWord.js';
 import { initMobileMenu } from './js/mobileMenu.js';
 import { initNavigation } from './js/navigation.js';
@@ -20,18 +17,26 @@ function loadDeferredContent(){
   }
 }
 
+function loadDecorativeEffects(){
+  const run=()=>{
+    void import('./js/cursor.js').then(({ initCursor }) => initCursor());
+    void import('./js/heroParallax.js').then(({ initHeroParallax }) => initHeroParallax());
+    void import('./js/heroParticles.js').then(({ initHeroParticles }) => initHeroParticles());
+  };
+
+  window.setTimeout(run, 1200);
+}
+
 function boot(){
   renderPage();
   initAboutMedia();
-  initCursor();
   initNavigation();
   initMobileMenu();
   initReveal();
   initWorkFilter();
   initContactForm();
   initHeroWord();
-  initHeroParallax();
-  initHeroParticles();
+  loadDecorativeEffects();
   document.addEventListener('inad:projects-hydrated',event=>{
     refreshWorkFilter();
     observeRevealElements(event.detail.root);

@@ -43,31 +43,31 @@
         <input type="checkbox" name="botcheck" class="hidden" style="display:none;">
         <div class="cform-row">
           <div class="cf">
-            <label>First Name *</label>
-            <input type="text" name="first_name" placeholder="Abebe" required>
+            <label for="first-name">First Name *</label>
+            <input id="first-name" type="text" name="first_name" placeholder="Abebe" required>
           </div>
           <div class="cf">
-            <label>Last Name *</label>
-            <input type="text" name="last_name" placeholder="Kebede" required>
+            <label for="last-name">Last Name *</label>
+            <input id="last-name" type="text" name="last_name" placeholder="Kebede" required>
           </div>
         </div>
         <div class="cform-row">
           <div class="cf">
-            <label>Email Address *</label>
-            <input type="email" name="email" placeholder="you@company.com" required>
+            <label for="email-address">Email Address *</label>
+            <input id="email-address" type="email" name="email" placeholder="you@company.com" required>
           </div>
           <div class="cf">
-            <label>Phone Number</label>
-            <input type="tel" name="phone" placeholder="09XX XXX XXX">
+            <label for="phone-number">Phone Number</label>
+            <input id="phone-number" type="tel" name="phone" placeholder="09XX XXX XXX">
           </div>
         </div>
         <div class="cf cf-full">
-          <label>Company</label>
-          <input type="text" name="company" placeholder="Your Company Name">
+          <label for="company-name">Company</label>
+          <input id="company-name" type="text" name="company" placeholder="Your Company Name">
         </div>
         <div class="cf cf-full">
-          <label>Service Required *</label>
-          <select name="service" required>
+          <label for="service-required">Service Required *</label>
+          <select id="service-required" name="service" required>
             <option value="" disabled selected>Select a service&hellip;</option>
             <option>BTL Marketing Solutions</option>
             <option>Corporate Events</option>
@@ -79,8 +79,8 @@
           </select>
         </div>
         <div class="cf cf-full">
-          <label>Project Brief *</label>
-          <textarea name="message" placeholder="Tell us about your goals, timeline, and what you'd like to achieve&hellip;" required></textarea>
+          <label for="project-brief">Project Brief *</label>
+          <textarea id="project-brief" name="message" placeholder="Tell us about your goals, timeline, and what you'd like to achieve&hellip;" required></textarea>
         </div>
         <button type="submit" class="cf-submit">Send Message &#8599;</button>
         <div class="cf-success" id="cfsuccess" aria-live="polite">&#10003; Thank you &mdash; your message has been sent.</div>
