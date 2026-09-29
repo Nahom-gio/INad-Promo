@@ -12,6 +12,7 @@
   #hero{padding:0 4vw;}
   .about-grid{grid-template-columns:1fr;gap:3.8rem;}
   .work-grid{grid-template-columns:1fr 1fr;}
+  .work-grid.is-all-view{grid-template-columns:1fr 1fr;}
   .work-grid.is-folder-view{grid-template-columns:1fr 1fr;}
   .wcard:nth-child(n){grid-column:span 1;aspect-ratio:4/3;}
   .why-grid{grid-template-columns:1fr 1fr;}
@@ -119,9 +120,10 @@
   .hero-sub{font-size:.92rem;line-height:1.78;}
   .hero-scroll{display:none;}
   .work-grid{grid-template-columns:1fr;}
+  .work-grid.is-all-view{grid-template-columns:1fr;}
   .work-grid.is-folder-view{grid-template-columns:1fr;}
   .work-head{align-items:flex-start;}
-  .work-filters{width:100%;}
+  .work-filters{width:100%;justify-content:flex-start;}
   .wf{flex:1 1 calc(50% - .55rem);padding:.5rem .65rem;}
   .wcard:nth-child(n){aspect-ratio:4/3;min-height:230px;}
   #process{padding-block:4.4rem;}
