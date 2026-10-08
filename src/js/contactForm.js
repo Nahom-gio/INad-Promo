@@ -6,7 +6,7 @@ async function handleForm(e){
   const form=e.target;
   const btn=form.querySelector('.cf-submit');
   const status=document.getElementById('cfsuccess');
-  const defaultText='Send the brief \u2192';
+  const defaultText='Send Message \u2197';
 
   status.style.display='none';
   status.classList.remove('is-error');
@@ -40,12 +40,5 @@ async function handleForm(e){
 }
 
 export function initContactForm(){
-  const form=document.getElementById('cform');
-  const date=new Date();
-  const number=`${String(date.getFullYear()).slice(2)}${String(date.getMonth()+1).padStart(2,'0')}${String(date.getDate()).padStart(2,'0')}-${String(Math.floor(Math.random()*900)+100)}`;
-  const numberEl=document.getElementById('ticketNumber');
-  const dateEl=document.getElementById('ticketDate');
-  if(numberEl) numberEl.textContent=`N° ${number}`;
-  if(dateEl) dateEl.textContent=date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-  form?.addEventListener('submit',handleForm);
+  document.getElementById('cform')?.addEventListener('submit',handleForm);
 }

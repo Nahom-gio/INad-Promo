@@ -21,10 +21,8 @@ function applyLayout(cards){
 function setGridMode(mode){
   const grid=document.getElementById('wGrid');
   if(!grid) return;
-  grid.classList.remove('is-folder-view','is-project-view','is-all-view');
-  if(mode==='folder') grid.classList.add('is-folder-view');
-  if(mode==='project') grid.classList.add('is-project-view');
-  if(mode==='all') grid.classList.add('is-all-view');
+  grid.classList.remove('is-folder-view','is-project-view');
+  grid.classList.add(mode==='folder' ? 'is-folder-view' : 'is-project-view');
 }
 
 function showCards(cards,{mode='project'}={}){
@@ -103,7 +101,7 @@ function fwork(btn,cat){
     if(back) back.hidden=true;
 
     const cards=[...document.querySelectorAll('.wcard')].filter(card=>card.dataset.all!=='false');
-    showCards(cards,{mode:'all'});
+    showCards(cards,{mode:'project'});
     return;
   }
 

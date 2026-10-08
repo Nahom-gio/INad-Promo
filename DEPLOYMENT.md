@@ -1,64 +1,53 @@
-# Deploying INAD to Yegara Host
+# Deployment
 
-The website consists of two packages:
+## Frontend on Vercel
 
-- `inad-content-manager-fixed.zip`: WordPress plugin for editable website content
-- `inad-yegara-deploy-fixed.zip`: compiled static website for `public_html`
+Deploy the root Vite app to Vercel.
 
-WordPress is installed at `/cms`, and the website reads from its public,
-read-only endpoint at `/cms/wp-json/inad/v1/content`. Content changes do not
-require rebuilding or uploading the website again.
+Vercel settings:
 
-## 1. Install the WordPress plugin
+- Framework Preset: `Vite`
+- Build Command: `npm run build`
+- Output Directory: `dist`
+- Install Command: `npm install`
 
-1. Sign in at `https://your-domain/cms/wp-admin`.
-2. Open **Plugins → Add New Plugin → Upload Plugin**.
-3. Upload `inad-content-manager-fixed.zip`.
-4. Click **Install Now**, then **Activate Plugin**.
-5. Confirm that **INAD Content** appears in the dashboard menu.
+Environment variables:
 
-## 2. Add content
-
-- **INAD Content → Projects:** add each project brand. Set its category, cover
-  image, gallery images, labels, order, and whether it appears under All Work.
-- **INAD Content → Client Logos:** add each client and set its Logo Image.
-- **INAD Content → About Video:** upload or select the About video.
-
-Only published projects and logos appear on the public website. Verify the API
-by opening:
-
-```text
-https://your-domain/cms/wp-json/inad/v1/content
+```env
+VITE_STRAPI_URL=https://your-strapi-domain.com
 ```
 
-It should return JSON containing `about`, `projectBrands`, and `clientLogos`.
+## Strapi Cloud
 
-## 3. Upload the website
+The production CMS is hosted on Strapi Cloud. Do not host Strapi itself on Vercel.
 
-1. Open Yegara **cPanel → File Manager → public_html**.
-2. Back up the existing files before replacing them.
-3. Keep the `cms` directory. It contains the WordPress installation.
-4. Remove Yegara's default/old root `index.html` if present.
-5. Upload `inad-yegara-deploy-fixed.zip` into `public_html` and extract it there.
-6. Confirm `index.html`, `assets`, `background`, `fonts`, and the other generated
-   files are directly in `public_html`, alongside the existing `cms` directory.
-7. Enable Yegara's SSL certificate and test the HTTPS website.
+In Vercel, set:
 
-Do not upload the source `src`, `node_modules`, `wordpress-plugin`, or
-`cms/strapi` directories to `public_html`.
+```env
+VITE_STRAPI_URL=https://your-strapi-cloud-domain
+```
 
-## 4. Production checks
+Strapi Cloud manages the hosted database and uploads storage. The local SQLite configuration remains suitable for local CMS development only.
 
-- `/cms/wp-json/inad/v1/content` returns JSON.
-- Projects and logos appear after publishing them in WordPress.
-- The About video loads after selecting it in WordPress.
-- Navigation and the mobile menu work.
-- The contact form sends a real test message.
-- `/privacy-policy.html`, `/terms-of-service.html`, `/robots.txt`, and
-  `/sitemap.xml` load correctly.
+## Strapi Public Permissions
 
-## Updating later
+In Strapi admin:
 
-Ordinary content changes happen entirely in WordPress and appear automatically.
-Rebuild and replace the static package only when website code, styling, or
-layout changes.
+`Settings -> Users & Permissions Plugin -> Roles -> Public`
+
+Enable `find` for:
+
+- `about-section`
+- `project-brand`
+- `client-logo`
+
+Keep the website content public-read only for just these content types. Do not ship a private Strapi API token in the browser for a public marketing site.
+
+## Local URLs
+
+Use:
+
+- Frontend: `http://127.0.0.1:5173`
+- Strapi Admin: `http://localhost:1337/admin`
+
+If `localhost:5173` shows `426 Upgrade Required`, use `127.0.0.1:5173`.
